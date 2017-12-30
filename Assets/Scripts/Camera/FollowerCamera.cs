@@ -43,8 +43,9 @@ public class FollowerCamera : MonoBehaviour
             //print("target pos " + targetViewportPos);
             // Clamp it
             targetViewportPos = new Vector3(
-                Mathf.Clamp(targetViewportPos.x, hardEdge.xMin, hardEdge.xMax),
-                Mathf.Clamp(targetViewportPos.y, hardEdge.yMin, hardEdge.yMax),
+                // A little offse is to make sure it fall back into soft region.
+                Mathf.Clamp(targetViewportPos.x, hardEdge.xMin * 1.05f, hardEdge.xMax * 0.95f),
+                Mathf.Clamp(targetViewportPos.y, hardEdge.yMin * 1.05f, hardEdge.yMax * 0.95f),
                 targetViewportPos.z
                 );
 
@@ -55,8 +56,8 @@ public class FollowerCamera : MonoBehaviour
         else if (softEdge.Contains(targetViewportPos) == false)
         {
             float offset =
-                Mathf.Max(softEdge.xMin - targetViewportPos.x, 0)/(softEdge.xMin - hardEdge.xMin)
-                + Mathf.Max(targetViewportPos.x - softEdge.xMax, 0) / (hardEdge.xMax -softEdge.xMax)
+                Mathf.Max(softEdge.xMin - targetViewportPos.x, 0) / (softEdge.xMin - hardEdge.xMin)
+                + Mathf.Max(targetViewportPos.x - softEdge.xMax, 0) / (hardEdge.xMax - softEdge.xMax)
                 + Mathf.Max(softEdge.yMin - targetViewportPos.y, 0) / (softEdge.yMin - hardEdge.yMin)
                 + Mathf.Max(targetViewportPos.y - softEdge.yMax, 0) / (hardEdge.yMax - softEdge.yMax);
             offset = Mathf.Max(offset * 5, 0.4f);
@@ -67,7 +68,7 @@ public class FollowerCamera : MonoBehaviour
             ThisCamera.transform.position -= (lerpWorldPos - target.position).SetY(0);
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         DrawRect(hardEdge, Color.red);
