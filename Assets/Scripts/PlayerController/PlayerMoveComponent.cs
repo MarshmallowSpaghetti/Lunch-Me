@@ -29,6 +29,10 @@ class PlayerMoveComponent : MonoBehaviour
 
     private void Update()
     {
+        // If the character is in the air, do nothing
+        if (CharController.enabled == false)
+            return;
+
         MoveWhileFaceMouse();
         //MoveInForward();
 

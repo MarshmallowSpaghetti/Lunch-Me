@@ -72,7 +72,7 @@ public class ProjectileController : MonoBehaviour
 
     private void Start()
     {
-        //Physics.gravity = new Vector3(0f, -50f, 0f);
+        Physics.gravity = new Vector3(0f, -30f, 0f);
         //print("gravity " + Physics.gravity);
 
         DynamicMaxSpeed = m_initialSpeed;
@@ -225,21 +225,26 @@ public class ProjectileController : MonoBehaviour
         //    player.holdingItem = item.transform;
         //}
 
-        if (player.holdingItem != null)
-        {
-            // For debuging
-            if (Time.time > lastShotTime + cooldown)
-            {
-                player.holdingItem.SetParent(null);
-                player.holdingItem.GetComponent<Rigidbody>().isKinematic = false;
-                player.holdingItem.GetComponent<Rigidbody>().velocity =
-                    launchPoint.forward * m_currentSpeed;
+        //if (player.holdingItem != null)
+        //{
+        //    // For debuging
+        //    if (Time.time > lastShotTime + cooldown)
+        //    {
+        //        player.holdingItem.SetParent(null);
+        //        player.holdingItem.GetComponent<Rigidbody>().isKinematic = false;
+        //        player.holdingItem.GetComponent<Rigidbody>().velocity =
+        //            launchPoint.forward * m_currentSpeed;
 
-                Vector3 torq = Quaternion.Euler(0, 90, 0) * transform.rotation * launchPoint.localRotation * new Vector3(10, 0, 0);
-                player.holdingItem.GetComponent<Rigidbody>().AddRelativeTorque(torq, ForceMode.VelocityChange);
-                player.holdingItem = null;
-                lastShotTime = Time.time;
-            }
-        }
+        //        Vector3 torq = Quaternion.Euler(0, 90, 0) * transform.rotation * launchPoint.localRotation * new Vector3(10, 0, 0);
+        //        player.holdingItem.GetComponent<Rigidbody>().AddRelativeTorque(torq, ForceMode.VelocityChange);
+        //        player.holdingItem = null;
+        //        lastShotTime = Time.time;
+        //    }
+        //}
+
+        // Launch player itself
+        player.IsInAir = true;
+        GetComponent<Rigidbody>().velocity =
+                    launchPoint.forward * m_currentSpeed;
     }
 }

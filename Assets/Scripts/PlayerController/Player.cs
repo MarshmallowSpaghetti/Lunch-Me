@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 
     public Transform launchTrans;
 
+    private bool m_isInAir;
+
     public Animator Animator
     {
         get
@@ -44,6 +46,31 @@ public class Player : MonoBehaviour
         set
         {
             m_projectileCtrl = value;
+        }
+    }
+
+    public bool IsInAir
+    {
+        get
+        {
+            return m_isInAir;
+        }
+
+        set
+        {
+            m_isInAir = value;
+            if(m_isInAir)
+            {
+                GetComponent<BoxCollider>().enabled = true;
+                GetComponent<CharacterController>().enabled = false;
+                GetComponent<Rigidbody>().useGravity = true;
+            }
+            else
+            {
+                GetComponent<BoxCollider>().enabled = false;
+                GetComponent<CharacterController>().enabled = true;
+                GetComponent<Rigidbody>().useGravity = false;
+            }
         }
     }
 
@@ -91,5 +118,11 @@ public class Player : MonoBehaviour
                 holdingItem = collision.transform;
             }
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print("collide with " + collision);
+        IsInAir = false;
     }
 }
