@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     public float keyboardSensitivity = 5;
 
-    private ProjectileComponent m_projectComp;
+    private ProjectileController m_projectileCtrl;
 
     public Transform launchTrans;
 
@@ -32,18 +32,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    public ProjectileComponent ProjectComp
+    public ProjectileController ProjectCtrl
     {
         get
         {
-            if (m_projectComp == null)
-                m_projectComp = GetComponent<ProjectileComponent>();
-            return m_projectComp;
+            if (m_projectileCtrl == null)
+                m_projectileCtrl = GetComponent<ProjectileController>();
+            return m_projectileCtrl;
         }
 
         set
         {
-            m_projectComp = value;
+            m_projectileCtrl = value;
         }
     }
 
@@ -51,8 +51,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         CheckMouseStatus();
-
-        ProjectComp.SetTargetWithAngle(MouseInput.Instance.MousePos, 45);
     }
 
     private void CheckMouseStatus()
@@ -61,40 +59,27 @@ public class Player : MonoBehaviour
         {
             m_isAiming = true;
             m_startAimTime = Time.time;
+
+            ProjectCtrl.SetEnable(true);
+            ProjectCtrl.StartCharge();
         }
         else if (Input.GetMouseButton(0) == false && m_isAiming == true)
         {
             m_isAiming = false;
             m_startAimTime = -1;
 
-            ProjectComp.Launch();
+            ProjectCtrl.SetEnable(false);
+            ProjectCtrl.StopChargeAndLaunch();
         }
 
         if(m_startAimTime >= 0)
         {
-            //UpdateDynamicalMaxSpeed();
+            ProjectCtrl.SetLaunchChargeTime(Time.time - m_startAimTime);
         }
     }
 
-    //private void OnControllerColliderHit(Collision collision)
-    //{
-    //    print("on colision enter " + collision.gameObject.name);
-    //    if (collision.gameObject.name == "Sphere")
-    //    {
-    //        //print("Pick " + collision.gameObject.name);
-    //        if (holdingItem == null)
-    //        {
-    //            collision.transform.position = (transform.position + Vector3.up);
-    //            collision.transform.SetParent(transform);
-    //            collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-    //            holdingItem = collision.transform;
-    //        }
-    //    }
-    //}
-
     private void OnControllerColliderHit(ControllerColliderHit collision)
     {
-        print("on colision enter " + collision.gameObject.name);
         if (collision.gameObject.name == "Sphere")
         {
             //print("Pick " + collision.gameObject.name);

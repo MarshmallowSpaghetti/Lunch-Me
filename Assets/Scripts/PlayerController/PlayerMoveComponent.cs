@@ -48,6 +48,8 @@ class PlayerMoveComponent : MonoBehaviour
         transform.forward =
             Vector3.Slerp(transform.forward,
             (MouseInput.Instance.MousePos - transform.position).SetY(0), 0.1f);
+        // Without lerp
+        //transform.forward = (MouseInput.Instance.MousePos - transform.position).SetY(0);
     }
 
     private void MoveInForward()
