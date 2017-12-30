@@ -9,7 +9,7 @@ class PlayerMoveComponent : MonoBehaviour
     public float speed = 1;
 
     private Vector3 m_motion;
-    private Vector3 m_lookPos;
+    
     private CharacterController m_charController;
 
     public CharacterController CharController
@@ -29,23 +29,11 @@ class PlayerMoveComponent : MonoBehaviour
 
     private void Update()
     {
-        UpdateMouseHitPos();
         MoveWhileFaceMouse();
         //MoveInForward();
 
         // Apply gravity
         CharController.Move(Physics.gravity.normalized * speed);
-    }
-
-    private void UpdateMouseHitPos()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Ground")))
-        {
-            m_lookPos = hit.point;
-        }
     }
 
     private void MoveWhileFaceMouse()
@@ -59,7 +47,7 @@ class PlayerMoveComponent : MonoBehaviour
         // Always keep in horizontal plane
         transform.forward =
             Vector3.Slerp(transform.forward,
-            (m_lookPos - transform.position).SetY(0), 0.1f);
+            (MouseInput.Instance.MousePos - transform.position).SetY(0), 0.1f);
     }
 
     private void MoveInForward()
