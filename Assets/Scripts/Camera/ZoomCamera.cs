@@ -40,7 +40,7 @@ public class ZoomCamera : MonoBehaviour
         transform.position = target.position - transform.forward * currentDistance;
     }
 
-    void Update()
+    void LateUpdate()
     {
         float previousZoomLevel = zoomLevel;
         float zoomInput = -Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
