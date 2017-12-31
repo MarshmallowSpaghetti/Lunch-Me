@@ -66,7 +66,7 @@ public class FollowerCamera : MonoBehaviour
             offset = Mathf.Max(offset * 5, 0.4f);
 
             Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(
-                Vector3.Lerp(targetViewportPos, new Vector3(0.5f, 0.5f, targetViewportPos.z), offset * Time.deltaTime));
+                Vector3.Lerp(targetViewportPos, new Vector3(0.5f, 0.5f, targetViewportPos.z), offset * 0.3f * Time.deltaTime));
             // Fix camera to a certain height
             ThisCamera.transform.position -= (lerpWorldPos - target.position).SetY(0);
         }
