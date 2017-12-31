@@ -12,6 +12,8 @@ public class ZoomCamera : MonoBehaviour
     [SerializeField]
     private float maxDistance = 20;
 
+    private float currentDistance;
+
     [SerializeField]
     private float zoomSensitivity = 1;
 
@@ -34,19 +36,24 @@ public class ZoomCamera : MonoBehaviour
     {
         transform.rotation = Quaternion.AngleAxis(incline, Vector3.right);
         zoomLevel = 0.5f;
-        transform.position = target.position
-            - transform.forward * (minDistance * zoomLevel + maxDistance * (1 - zoomLevel));
+        currentDistance = Mathf.Lerp(maxDistance, minDistance, zoomLevel);
+        transform.position = target.position - transform.forward * currentDistance;
     }
 
     void Update()
     {
         float previousZoomLevel = zoomLevel;
         float zoomInput = -Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        //print("input " + zoomInput);
         if (zoomInput.Sgn() > 0)
-            zoomLevel = Mathf.Lerp(zoomLevel, 0, Mathf.Abs(zoomInput));
+            zoomLevel = Mathf.Lerp(zoomLevel, 1, Mathf.Abs(zoomInput) * Time.deltaTime);
         else if (zoomInput.Sgn() < 0)
-            zoomLevel = Mathf.Lerp(zoomLevel, 1, Mathf.Abs(zoomInput));
-
-        transform.position += transform.forward * (zoomLevel - previousZoomLevel) * (maxDistance - minDistance);
+            zoomLevel = Mathf.Lerp(zoomLevel, 0, Mathf.Abs(zoomInput) * Time.deltaTime);
+        
+        Vector3 projectVec = Vector3.Dot(transform.forward, target.position - transform.position) * transform.forward;
+        Vector3 projectPos = transform.position + projectVec;
+        
+        transform.position = projectPos -
+            transform.forward * (zoomLevel * (maxDistance - minDistance) + minDistance);
     }
 }

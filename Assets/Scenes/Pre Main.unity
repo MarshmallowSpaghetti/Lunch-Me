@@ -234,7 +234,7 @@ MonoBehaviour:
   incline: 45
   minDistance: 5
   maxDistance: 20
-  zoomSensitivity: 1
+  zoomSensitivity: 100
   target: {fileID: 857011457}
 --- !u!1 &638934669
 GameObject:
@@ -444,7 +444,7 @@ MonoBehaviour:
   launchPoint: {fileID: 1616226108}
   projectileArc: {fileID: 1102896967}
   cooldown: 0.1
-  m_initialDegree: 45
+  m_initialDegree: 60
   m_initialSpeed: 12
   m_useLowAngle: 1
   minDegree: 0
