@@ -64,6 +64,9 @@ public class Player : MonoBehaviour
                 GetComponent<BoxCollider>().enabled = true;
                 GetComponent<CharacterController>().enabled = false;
                 GetComponent<Rigidbody>().useGravity = true;
+
+                // Hardcoded
+                GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(false);
             }
             else
             {
@@ -73,6 +76,10 @@ public class Player : MonoBehaviour
 
                 // Prevenet player slide after landing
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+                // Hardcoded
+                GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(true);
+                GetComponent<PlayerMoveComponent>().motionRing.forward = transform.forward;
             }
         }
     }

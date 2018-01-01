@@ -10,6 +10,8 @@ class PlayerMoveComponent : MonoBehaviour
 
     private Vector3 m_motion;
 
+    public Transform motionRing;
+
     private CharacterController m_charController;
 
     public CharacterController CharController
@@ -65,6 +67,10 @@ class PlayerMoveComponent : MonoBehaviour
             CrossPlatformInputManager.GetAxis("Horizontal"),
             0,
             CrossPlatformInputManager.GetAxis("Vertical"));
+
+        motionRing.position = transform.position;
+        if (m_motion.magnitude > 0.01f)
+            motionRing.forward = m_motion.normalized;
 
         CharController.Move(m_motion * speed);
         // Always keep in horizontal plane
