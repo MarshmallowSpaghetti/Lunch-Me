@@ -64,25 +64,25 @@ public class FollowerCamera : MonoBehaviour
         //    ThisCamera.transform.position -= (clampedWorldPos - target.position).SetY(0);
         //}
         //else if (softEdge.Contains(targetViewportPos) == false)
-        //if (softEdge.Contains(targetViewportPos) == false)
-        //{
-        float offset =
+        if (softEdge.Contains(targetViewportPos) == false)
+        {
+            float offset =
             Mathf.Max(softEdge.xMin - targetViewportPos.x, 0) / (softEdge.xMin - hardEdge.xMin)
             + Mathf.Max(targetViewportPos.x - softEdge.xMax, 0) / (hardEdge.xMax - softEdge.xMax)
             + Mathf.Max(softEdge.yMin - targetViewportPos.y, 0) / (softEdge.yMin - hardEdge.yMin)
             + Mathf.Max(targetViewportPos.y - softEdge.yMax, 0) / (hardEdge.yMax - softEdge.yMax);
-        offset = Mathf.Max(offset * 5, 0.4f);
+            offset = Mathf.Max(offset * 5, 0.4f);
 
-        Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(
-            Vector3.Lerp(targetViewportPos, new Vector3(
-                0.5f,
-                0.5f,
-                targetViewportPos.z), offset * 3f * Time.deltaTime));
-        // If glitch still exists, use the fix camera below
-        //Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, targetViewportPos.z));
+            Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(
+                Vector3.Lerp(targetViewportPos, new Vector3(
+                    0.5f,
+                    0.5f,
+                    targetViewportPos.z), offset * 3f * Time.deltaTime));
+            // If glitch still exists, use the fix camera below
+            //Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, targetViewportPos.z));
 
-        ThisCamera.transform.position -= (lerpWorldPos - target.position);
-        //}
+            ThisCamera.transform.position -= (lerpWorldPos - target.position);
+        }
 
         m_previousPos = targetViewportPos;
     }

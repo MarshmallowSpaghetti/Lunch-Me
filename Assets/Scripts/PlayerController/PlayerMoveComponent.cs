@@ -70,7 +70,10 @@ class PlayerMoveComponent : MonoBehaviour
 
         motionRing.position = transform.position;
         if (m_motion.magnitude > 0.01f)
-            motionRing.forward = m_motion.normalized;
+            motionRing.forward = 
+                Vector3.Slerp(motionRing.forward,
+                m_motion.normalized,
+                0.5f);
 
         CharController.Move(m_motion * speed);
         // Always keep in horizontal plane
