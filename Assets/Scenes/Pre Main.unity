@@ -215,11 +215,12 @@ MonoBehaviour:
     height: 0.7
   softEdge:
     serializedVersion: 2
-    x: 0.45
+    x: 0.4
     y: 0.3
-    width: 0.1
+    width: 0.2
     height: 0.2
   target: {fileID: 857011457}
+  player: {fileID: 857011462}
 --- !u!114 &622601817
 MonoBehaviour:
   m_ObjectHideFlags: 0

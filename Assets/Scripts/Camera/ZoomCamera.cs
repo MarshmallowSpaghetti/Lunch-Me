@@ -40,7 +40,7 @@ public class ZoomCamera : MonoBehaviour
         transform.position = target.position - transform.forward * currentDistance;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         currentDistance = Vector3.Dot(transform.forward, target.position - transform.position);
         Vector3 projectVec = currentDistance * transform.forward;
