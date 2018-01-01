@@ -9,7 +9,7 @@ class PlayerMoveComponent : MonoBehaviour
     public float speed = 1;
 
     private Vector3 m_motion;
-    
+
     private CharacterController m_charController;
 
     public CharacterController CharController
@@ -27,6 +27,23 @@ class PlayerMoveComponent : MonoBehaviour
         }
     }
 
+    public Rigidbody Rig
+    {
+        get
+        {
+            if (m_rig == null)
+                m_rig = GetComponent<Rigidbody>();
+            return m_rig;
+        }
+
+        set
+        {
+            m_rig = value;
+        }
+    }
+
+    private Rigidbody m_rig;
+
     private void Update()
     {
         // If the character is in the air, do nothing
@@ -37,7 +54,9 @@ class PlayerMoveComponent : MonoBehaviour
         //MoveInForward();
 
         // Apply gravity
-        CharController.Move(Physics.gravity.normalized * speed);
+        //CharController.Move(Physics.gravity.normalized * speed);
+        CharController.Move(Rig.velocity + Physics.gravity * Time.deltaTime);
+        //print("gravity " + Rig.velocity + Physics.gravity * Time.deltaTime);
     }
 
     private void MoveWhileFaceMouse()
@@ -62,7 +81,7 @@ class PlayerMoveComponent : MonoBehaviour
             CrossPlatformInputManager.GetAxis("Horizontal"),
             0,
             CrossPlatformInputManager.GetAxis("Vertical"));
-        
+
         float angleInAFrame = 300 * Time.deltaTime;
         if (Vector3.Angle(transform.forward, m_motion.SetY(0)) < angleInAFrame * 2)
         {

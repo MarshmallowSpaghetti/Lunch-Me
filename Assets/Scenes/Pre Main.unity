@@ -215,9 +215,9 @@ MonoBehaviour:
     height: 0.7
   softEdge:
     serializedVersion: 2
-    x: 0.3
+    x: 0.45
     y: 0.3
-    width: 0.4
+    width: 0.1
     height: 0.2
   target: {fileID: 857011457}
 --- !u!114 &622601817

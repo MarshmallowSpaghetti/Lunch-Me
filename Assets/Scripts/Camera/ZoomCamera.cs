@@ -46,11 +46,11 @@ public class ZoomCamera : MonoBehaviour
         Vector3 projectVec = currentDistance * transform.forward;
         Vector3 projectPos = transform.position + projectVec;
 
-        zoomLevel = (currentDistance - minDistance) / (maxDistance - minDistance);
-        if (zoomLevel < 0)
-            zoomLevel = Mathf.Lerp(zoomLevel, 0.3f, Mathf.Abs(zoomLevel) * 5 * Time.deltaTime);
-        if (zoomLevel > 1)
-            zoomLevel = Mathf.Lerp(zoomLevel, 0.9f, Mathf.Abs(zoomLevel) * 5 * Time.deltaTime);
+        //zoomLevel = (currentDistance - minDistance) / (maxDistance - minDistance);
+        //if (zoomLevel < 0)
+        //    zoomLevel = Mathf.Lerp(zoomLevel, 0.3f, Mathf.Abs(zoomLevel) * 5 * Time.deltaTime);
+        //if (zoomLevel > 1)
+        //    zoomLevel = Mathf.Lerp(zoomLevel, 0.9f, Mathf.Abs(zoomLevel - 1) * 5 * Time.deltaTime);
 
         float zoomInput = -Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
         //print("input " + zoomInput);

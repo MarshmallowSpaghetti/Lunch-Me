@@ -39,7 +39,7 @@ public class FollowerCamera : MonoBehaviour
     private void CheckTargetViewportPos()
     {
         Vector3 targetViewportPos = ThisCamera.WorldToViewportPoint(target.position);
-        
+
         //if (hardEdge.Contains(targetViewportPos) == false)
         //{
         //    //print("target pos " + targetViewportPos);
@@ -56,20 +56,25 @@ public class FollowerCamera : MonoBehaviour
         //    ThisCamera.transform.position -= (clampedWorldPos - target.position).SetY(0);
         //}
         //else if (softEdge.Contains(targetViewportPos) == false)
-        if (softEdge.Contains(targetViewportPos) == false)
-        {
+        //if (softEdge.Contains(targetViewportPos) == false)
+        //{
             float offset =
                 Mathf.Max(softEdge.xMin - targetViewportPos.x, 0) / (softEdge.xMin - hardEdge.xMin)
                 + Mathf.Max(targetViewportPos.x - softEdge.xMax, 0) / (hardEdge.xMax - softEdge.xMax)
                 + Mathf.Max(softEdge.yMin - targetViewportPos.y, 0) / (softEdge.yMin - hardEdge.yMin)
-                + Mathf.Max(targetViewportPos.y - softEdge.yMax, 0) / (hardEdge.yMax - softEdge.yMax) * 3;
+                + Mathf.Max(targetViewportPos.y - softEdge.yMax, 0) / (hardEdge.yMax - softEdge.yMax);
             offset = Mathf.Max(offset * 5, 0.4f);
 
-            Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(
-                Vector3.Lerp(targetViewportPos, new Vector3(0.5f, 0.5f, targetViewportPos.z), offset * 0.3f * Time.deltaTime));
-            // Fix camera to a certain height
-            ThisCamera.transform.position -= (lerpWorldPos - target.position).SetY(0);
-        }
+            //Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(
+            //    Vector3.Lerp(targetViewportPos, new Vector3(
+            //        Mathf.Clamp(targetViewportPos.x, softEdge.xMin, softEdge.xMax),
+            //        Mathf.Clamp(targetViewportPos.y, softEdge.yMin, softEdge.yMax),
+            //        targetViewportPos.z), offset * 30f * Time.deltaTime));
+            // If glitch still exists, use the fix camera below
+            Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, targetViewportPos.z));
+
+        ThisCamera.transform.position -= (lerpWorldPos - target.position);
+        //}
 
         m_previousPos = targetViewportPos;
     }

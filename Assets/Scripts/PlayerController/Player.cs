@@ -70,6 +70,9 @@ public class Player : MonoBehaviour
                 GetComponent<BoxCollider>().enabled = false;
                 GetComponent<CharacterController>().enabled = true;
                 GetComponent<Rigidbody>().useGravity = false;
+
+                // Prevenet player slide after landing
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
         }
     }
