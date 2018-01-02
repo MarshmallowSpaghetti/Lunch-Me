@@ -16,8 +16,7 @@ public class Player : MonoBehaviour
     private ProjectileController m_projectileCtrl;
 
     public Transform launchTrans;
-
-    private bool m_isInAir;
+    
     private Rigidbody m_rig;
 
     public Animator Animator
@@ -47,41 +46,6 @@ public class Player : MonoBehaviour
         set
         {
             m_projectileCtrl = value;
-        }
-    }
-
-    public bool IsInAir
-    {
-        get
-        {
-            return m_isInAir;
-        }
-
-        set
-        {
-            m_isInAir = value;
-            if (m_isInAir)
-            {
-                //GetComponent<BoxCollider>().enabled = true;
-                //GetComponent<CharacterController>().enabled = false;
-                //GetComponent<Rigidbody>().useGravity = true;
-
-                // Hardcoded
-                GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(false);
-            }
-            else
-            {
-                //GetComponent<BoxCollider>().enabled = false;
-                //GetComponent<CharacterController>().enabled = true;
-                //GetComponent<Rigidbody>().useGravity = false;
-
-                // Prevenet player slide after landing
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
-
-                // Hardcoded
-                GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(true);
-                GetComponent<PlayerMoveComponent>().motionRing.forward = transform.forward;
-            }
         }
     }
 
@@ -138,18 +102,6 @@ public class Player : MonoBehaviour
                 collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 holdingItem = collision.transform;
             }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        //print("collide with " + collision.gameObject.layer);
-        // We give player control only when player land on ground
-        if (collision.gameObject.layer == 8)
-            IsInAir = false;
-        else
-        {
-            Rig.AddForce(collision.impulse * 0.2f, ForceMode.Impulse);
         }
     }
 }

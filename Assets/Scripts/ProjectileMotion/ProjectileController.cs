@@ -217,7 +217,7 @@ public class ProjectileController : MonoBehaviour
     public void Launch()
     {
         print("Launch");
-        Player player = GetComponent<Player>();
+        PlayerMoveComponent playerMover = GetComponent<PlayerMoveComponent>();
 
         //if(player.holdingItem == null)
         //{
@@ -243,7 +243,7 @@ public class ProjectileController : MonoBehaviour
         //}
 
         // Launch player itself
-        player.IsInAir = true;
+        playerMover.IsOnGround = false;
         GetComponent<Rigidbody>().velocity =
                     launchPoint.forward * m_currentSpeed;
     }

@@ -8,6 +8,7 @@ class PlayerMoveComponent : MonoBehaviour
     public float speed = 1;
 
     private Vector3 m_motion;
+    private bool m_isOnGround;
 
     public Transform motionRing;
 
@@ -43,6 +44,32 @@ class PlayerMoveComponent : MonoBehaviour
         }
     }
 
+    public bool IsOnGround
+    {
+        get
+        {
+            return m_isOnGround;
+        }
+
+        set
+        {
+            if (m_isOnGround == true && value == false)
+            {
+                motionRing.gameObject.SetActive(false);
+            }
+            else if(m_isOnGround == false && value == true)
+            {
+                // Prevenet player slide after landing
+                //Rig.velocity = Vector3.zero;
+
+                // Hardcoded
+                motionRing.gameObject.SetActive(true);
+                motionRing.forward = transform.forward;
+            }
+            m_isOnGround = value;
+        }
+    }
+
     private Rigidbody m_rig;
 
     private void FixedUpdate()
@@ -55,7 +82,6 @@ class PlayerMoveComponent : MonoBehaviour
         //MoveInForward();
 
         // Apply gravity
-        //CharController.Move(Physics.gravity.normalized * speed);
         //CharController.Move(Rig.velocity + Physics.gravity * Time.deltaTime);
         //print("gravity " + Rig.velocity + Physics.gravity * Time.deltaTime);
     }
@@ -77,7 +103,7 @@ class PlayerMoveComponent : MonoBehaviour
         //CharController.Move(m_motion * speed);
 
         // TODO: Use acceleration later
-        if (GetComponent<Player>().IsInAir == false)
+        if (IsOnGround)
             Rig.velocity = m_motion * speed / Time.deltaTime;
 
         // Always keep in horizontal plane
@@ -105,6 +131,27 @@ class PlayerMoveComponent : MonoBehaviour
         else if (m_motion.SetY(0).sqrMagnitude.Sgn() > 0)
         {
             transform.Rotate(Vector3.up, Vector3.SignedAngle(transform.forward, m_motion, Vector3.up).Sgn() * angleInAFrame);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //print("collide with " + collision.gameObject.layer);
+        // We give player control only when player land on ground
+        if (collision.gameObject.layer == 8)
+            IsOnGround = true;
+        else
+        {
+            Rig.AddForce(collision.impulse * 0.2f, ForceMode.Impulse);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.layer == 8)
+        {
+            //print("Leave ground");
+            IsOnGround = false;
         }
     }
 }
