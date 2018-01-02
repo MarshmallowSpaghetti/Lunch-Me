@@ -34,14 +34,7 @@ public class FollowerCamera : MonoBehaviour
         // Due to render order, the rect may not be the exact one.
         //DrawRect();
 
-        if (player.IsInAir)
-            CheckTargetViewportPos();
-    }
-
-    private void LateUpdate()
-    {
-        if (player.IsInAir == false)
-            CheckTargetViewportPosOnGround();
+        CheckTargetViewportPos();
     }
 
     private void CheckTargetViewportPos()
@@ -83,49 +76,6 @@ public class FollowerCamera : MonoBehaviour
 
             ThisCamera.transform.position -= (lerpWorldPos - target.position);
         }
-
-        m_previousPos = targetViewportPos;
-    }
-
-    private void CheckTargetViewportPosOnGround()
-    {
-        Vector3 targetViewportPos = ThisCamera.WorldToViewportPoint(target.position);
-
-        //if (hardEdge.Contains(targetViewportPos) == false)
-        //{
-        //    //print("target pos " + targetViewportPos);
-        //    // Clamp it
-        //    targetViewportPos = new Vector3(
-        //        // A little offse is to make sure it fall back into soft region.
-        //        Mathf.Clamp(targetViewportPos.x, hardEdge.xMin * 1.05f, hardEdge.xMax * 0.95f),
-        //        Mathf.Clamp(targetViewportPos.y, hardEdge.yMin * 1.05f, hardEdge.yMax * 0.95f),
-        //        targetViewportPos.z
-        //        );
-
-        //    Vector3 clampedWorldPos = ThisCamera.ViewportToWorldPoint(targetViewportPos);
-        //    // Fix camera to a certain height
-        //    ThisCamera.transform.position -= (clampedWorldPos - target.position).SetY(0);
-        //}
-        //else if (softEdge.Contains(targetViewportPos) == false)
-        //if (softEdge.Contains(targetViewportPos) == false)
-        //{
-        float offset =
-            Mathf.Max(softEdge.xMin - targetViewportPos.x, 0) / (softEdge.xMin - hardEdge.xMin)
-            + Mathf.Max(targetViewportPos.x - softEdge.xMax, 0) / (hardEdge.xMax - softEdge.xMax)
-            + Mathf.Max(softEdge.yMin - targetViewportPos.y, 0) / (softEdge.yMin - hardEdge.yMin)
-            + Mathf.Max(targetViewportPos.y - softEdge.yMax, 0) / (hardEdge.yMax - softEdge.yMax);
-        offset = Mathf.Max(offset * 5, 0.4f);
-
-        Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(
-            Vector3.Lerp(targetViewportPos, new Vector3(
-                0.5f,
-                0.5f,
-                targetViewportPos.z), offset * 0.5f * Time.deltaTime));
-        // If glitch still exists, use the fix camera below
-        //Vector3 lerpWorldPos = ThisCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, targetViewportPos.z));
-
-        ThisCamera.transform.position -= (lerpWorldPos - target.position);
-        //}
 
         m_previousPos = targetViewportPos;
     }

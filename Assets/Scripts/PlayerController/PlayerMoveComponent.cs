@@ -49,15 +49,15 @@ class PlayerMoveComponent : MonoBehaviour
     private void Update()
     {
         // If the character is in the air, do nothing
-        if (CharController.enabled == false)
-            return;
+        //if (CharController.enabled == false)
+        //    return;
 
         MoveWhileFaceMouse();
         //MoveInForward();
 
         // Apply gravity
         //CharController.Move(Physics.gravity.normalized * speed);
-        CharController.Move(Rig.velocity + Physics.gravity * Time.deltaTime);
+        //CharController.Move(Rig.velocity + Physics.gravity * Time.deltaTime);
         //print("gravity " + Rig.velocity + Physics.gravity * Time.deltaTime);
     }
 
@@ -70,12 +70,17 @@ class PlayerMoveComponent : MonoBehaviour
 
         motionRing.position = transform.position;
         if (m_motion.magnitude > 0.01f)
-            motionRing.forward = 
+            motionRing.forward =
                 Vector3.Slerp(motionRing.forward,
                 m_motion.normalized,
-                0.5f);
+                0.2f);
 
-        CharController.Move(m_motion * speed);
+        //CharController.Move(m_motion * speed);
+
+        // TODO: Use acceleration later
+        if (GetComponent<Player>().IsInAir == false)
+            Rig.velocity = m_motion * speed / Time.deltaTime;
+
         // Always keep in horizontal plane
         transform.forward =
             Vector3.Slerp(transform.forward,

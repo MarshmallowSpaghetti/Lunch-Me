@@ -61,21 +61,21 @@ public class Player : MonoBehaviour
             m_isInAir = value;
             if(m_isInAir)
             {
-                GetComponent<BoxCollider>().enabled = true;
-                GetComponent<CharacterController>().enabled = false;
-                GetComponent<Rigidbody>().useGravity = true;
+                //GetComponent<BoxCollider>().enabled = true;
+                //GetComponent<CharacterController>().enabled = false;
+                //GetComponent<Rigidbody>().useGravity = true;
 
                 // Hardcoded
                 GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(false);
             }
             else
             {
-                GetComponent<BoxCollider>().enabled = false;
-                GetComponent<CharacterController>().enabled = true;
-                GetComponent<Rigidbody>().useGravity = false;
+                //GetComponent<BoxCollider>().enabled = false;
+                //GetComponent<CharacterController>().enabled = true;
+                //GetComponent<Rigidbody>().useGravity = false;
 
-                // Prevenet player slide after landing
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //// Prevenet player slide after landing
+                //GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                 // Hardcoded
                 GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(true);
