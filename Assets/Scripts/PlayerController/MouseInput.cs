@@ -5,6 +5,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class MouseInput : BaseSingletonMono<MouseInput>
 {
     private Vector3 m_mousePos;
+    public Transform cursorTrans;
 
     public Vector3 MousePos
     {
@@ -40,5 +41,10 @@ public class MouseInput : BaseSingletonMono<MouseInput>
         {
             MousePos = hit.point;
         }
+
+        if (cursorTrans)
+            cursorTrans.position = MousePos;
+        else
+            transform.position = MousePos;
     }
 }
