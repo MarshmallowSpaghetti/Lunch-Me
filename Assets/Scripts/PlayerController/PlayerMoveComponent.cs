@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-[RequireComponent(typeof(CharacterController))]
 class PlayerMoveComponent : MonoBehaviour
 {
     public float speed = 1;
@@ -46,7 +45,7 @@ class PlayerMoveComponent : MonoBehaviour
 
     private Rigidbody m_rig;
 
-    private void Update()
+    private void FixedUpdate()
     {
         // If the character is in the air, do nothing
         //if (CharController.enabled == false)
@@ -84,7 +83,7 @@ class PlayerMoveComponent : MonoBehaviour
         // Always keep in horizontal plane
         transform.forward =
             Vector3.Slerp(transform.forward,
-            (MouseInput.Instance.MousePos - transform.position).SetY(0), 0.1f);
+            (MouseInput.Instance.MousePos - transform.position).SetY(0), 0.2f);
         // Without lerp
         //transform.forward = (MouseInput.Instance.MousePos - transform.position).SetY(0);
     }

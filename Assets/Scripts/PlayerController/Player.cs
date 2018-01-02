@@ -5,9 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Animator m_animator;
-    
+
     public Transform holdingItem;
-    
+
     private bool m_isAiming = false;
     private float m_startAimTime = -1;
 
@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public Transform launchTrans;
 
     private bool m_isInAir;
+    private Rigidbody m_rig;
 
     public Animator Animator
     {
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
         set
         {
             m_isInAir = value;
-            if(m_isInAir)
+            if (m_isInAir)
             {
                 //GetComponent<BoxCollider>().enabled = true;
                 //GetComponent<CharacterController>().enabled = false;
@@ -74,13 +75,23 @@ public class Player : MonoBehaviour
                 //GetComponent<CharacterController>().enabled = true;
                 //GetComponent<Rigidbody>().useGravity = false;
 
-                //// Prevenet player slide after landing
-                //GetComponent<Rigidbody>().velocity = Vector3.zero;
+                // Prevenet player slide after landing
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                 // Hardcoded
                 GetComponent<PlayerMoveComponent>().motionRing.gameObject.SetActive(true);
                 GetComponent<PlayerMoveComponent>().motionRing.forward = transform.forward;
             }
+        }
+    }
+
+    public Rigidbody Rig
+    {
+        get
+        {
+            if (m_rig == null)
+                m_rig = GetComponent<Rigidbody>();
+            return m_rig;
         }
     }
 
@@ -109,7 +120,7 @@ public class Player : MonoBehaviour
             ProjectCtrl.StopChargeAndLaunch();
         }
 
-        if(m_startAimTime >= 0)
+        if (m_startAimTime >= 0)
         {
             ProjectCtrl.SetLaunchChargeTime(Time.time - m_startAimTime);
         }
@@ -132,7 +143,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("collide with " + collision);
-        IsInAir = false;
+        //print("collide with " + collision.gameObject.layer);
+        // We give player control only when player land on ground
+        if (collision.gameObject.layer == 8)
+            IsInAir = false;
+        else
+        {
+            Rig.AddForce(collision.impulse * 0.2f, ForceMode.Impulse);
+        }
     }
 }

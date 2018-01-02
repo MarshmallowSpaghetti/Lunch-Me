@@ -446,7 +446,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 857011457}
-  - component: {fileID: 857011458}
   - component: {fileID: 857011460}
   - component: {fileID: 857011459}
   - component: {fileID: 857011461}
@@ -489,23 +488,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &857011458
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 857011453}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Height: 1
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &857011459
 MonoBehaviour:
   m_ObjectHideFlags: 0
