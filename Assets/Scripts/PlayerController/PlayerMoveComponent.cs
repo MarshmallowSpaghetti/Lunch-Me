@@ -103,8 +103,10 @@ class PlayerMoveComponent : MonoBehaviour
         //CharController.Move(m_motion * speed);
 
         // TODO: Use acceleration later
-        if (IsOnGround)
-            Rig.velocity = m_motion * speed / Time.deltaTime;
+        if (IsOnGround && CheckGroundInRange(0.6f))
+            Rig.velocity = m_motion * speed / Time.fixedDeltaTime;
+
+        Rig.velocity += Physics.gravity * Time.fixedDeltaTime;
 
         // Always keep in horizontal plane
         transform.forward =
@@ -153,5 +155,10 @@ class PlayerMoveComponent : MonoBehaviour
             //print("Leave ground");
             //IsOnGround = false;
         }
+    }
+
+    private bool CheckGroundInRange(float _distance)
+    {
+        return Physics.Raycast(transform.position, Vector3.down, _distance, 1 << LayerMask.NameToLayer("Ground"));
     }
 }
