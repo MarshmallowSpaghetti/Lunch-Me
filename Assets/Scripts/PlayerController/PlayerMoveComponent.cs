@@ -151,7 +151,7 @@ class PlayerMoveComponent : MonoBehaviour
         if (collision.gameObject.layer == 8)
         {
             //print("Leave ground");
-            IsOnGround = false;
+            //IsOnGround = false;
         }
     }
 }
