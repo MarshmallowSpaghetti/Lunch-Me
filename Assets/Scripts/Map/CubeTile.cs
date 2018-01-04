@@ -8,7 +8,8 @@ public class CubeTile : MonoBehaviour
     public enum TileType
     {
         Grass,
-        Stone
+        Stone,
+        Brick
     }
 
     // Remove in build version
