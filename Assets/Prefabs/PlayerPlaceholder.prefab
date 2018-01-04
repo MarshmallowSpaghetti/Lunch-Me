@@ -1244,6 +1244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoveComp: {fileID: 114367747787690306}
   dust: {fileID: 198922661267874732}
+  impactDust: {fileID: 0}
   trailInAir: {fileID: 96840408585755352}
 --- !u!114 &114967220158310530
 MonoBehaviour:
@@ -5490,7 +5491,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -219247644
+  randomSeed: 621111570
   InitialModule:
     serializedVersion: 3
     enabled: 1

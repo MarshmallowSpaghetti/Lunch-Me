@@ -15,6 +15,8 @@ public class PlayerMoveComponent : MonoBehaviour
     private CharacterController m_charController;
     private PlayerAnim m_playerAnimController;
 
+    public Action onHitGround;
+
     public CharacterController CharController
     {
         get
@@ -81,6 +83,10 @@ public class PlayerMoveComponent : MonoBehaviour
                 // Hardcoded
                 motionRing.gameObject.SetActive(true);
                 motionRing.forward = transform.forward;
+
+                //print("Hit on ground");
+                if (onHitGround != null)
+                    onHitGround();
             }
             m_isOnGround = value;
         }
@@ -119,7 +125,7 @@ public class PlayerMoveComponent : MonoBehaviour
         //CharController.Move(m_motion * speed);
 
         // TODO: Use acceleration later
-        if (IsOnGround && CheckGroundInRange(1.1f))
+        if (IsOnGround && CheckGroundInRange(1.4f))
             Rig.velocity = m_motion * speed / Time.fixedDeltaTime;
 
         Rig.velocity += Physics.gravity * Time.fixedDeltaTime;
@@ -159,7 +165,9 @@ public class PlayerMoveComponent : MonoBehaviour
         //print("collide with " + collision.gameObject.layer);
         // We give player control only when player land on ground
         if (collision.gameObject.layer == 8)
+        {
             IsOnGround = true;
+        }
         else
         {
             Rig.AddForce(collision.impulse * 0.2f, ForceMode.Impulse);
