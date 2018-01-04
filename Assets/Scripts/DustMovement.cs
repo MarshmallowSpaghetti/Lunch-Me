@@ -8,6 +8,9 @@ public class DustMovement : MonoBehaviour
     public ParticleSystem dust;
     private Vector3 initLocalPos;
 
+    // TODO: maybe move to another script?
+    public TrailRenderer trailInAir;
+
     // Use this for initialization
     void Start()
     {
@@ -21,13 +24,15 @@ public class DustMovement : MonoBehaviour
             + Quaternion.Inverse(playerMoveComp.transform.rotation) 
                 * playerMoveComp.Rig.velocity.normalized * -playerMoveComp.Rig.velocity.magnitude * 0.1f;
 
-        if (playerMoveComp.IsOnGround == false && dust.isPlaying)
+        if (playerMoveComp.IsOnGround == false && dust.isStopped == false)
         {
             dust.Stop();
+            trailInAir.enabled = true;
         }
-        else if (playerMoveComp.IsOnGround == true && dust.isStopped)
+        else if (playerMoveComp.IsOnGround == true && dust.isPlaying == false)
         {
             dust.Play();
+            trailInAir.enabled = false;
         }
     }
 }
