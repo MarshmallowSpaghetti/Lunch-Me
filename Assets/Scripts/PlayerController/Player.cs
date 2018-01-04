@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Animator m_animator;
+    private PlayerAnim m_playerAnimController;
 
     public Transform holdingItem;
 
@@ -19,18 +19,18 @@ public class Player : MonoBehaviour
     
     private Rigidbody m_rig;
 
-    public Animator Animator
+    public PlayerAnim PlayerAnimController
     {
         get
         {
-            if (m_animator == null)
-                m_animator = GetComponentInChildren<Animator>();
-            return m_animator;
+            if (m_playerAnimController == null)
+                m_playerAnimController = GetComponent<PlayerAnim>();
+            return m_playerAnimController;
         }
 
         set
         {
-            m_animator = value;
+            m_playerAnimController = value;
         }
     }
 
@@ -74,6 +74,8 @@ public class Player : MonoBehaviour
 
             ProjectCtrl.SetEnable(true);
             ProjectCtrl.StartCharge();
+
+            PlayerAnimController.Hold();
         }
         else if (Input.GetMouseButton(0) == false && m_isAiming == true)
         {
@@ -82,6 +84,8 @@ public class Player : MonoBehaviour
 
             ProjectCtrl.SetEnable(false);
             ProjectCtrl.StopChargeAndLaunch();
+
+            PlayerAnimController.Push();
         }
 
         if (m_startAimTime >= 0)

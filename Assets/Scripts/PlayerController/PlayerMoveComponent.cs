@@ -13,6 +13,7 @@ class PlayerMoveComponent : MonoBehaviour
     public Transform motionRing;
 
     private CharacterController m_charController;
+    private PlayerAnim m_playerAnimController;
 
     public CharacterController CharController
     {
@@ -41,6 +42,21 @@ class PlayerMoveComponent : MonoBehaviour
         set
         {
             m_rig = value;
+        }
+    }
+
+    public PlayerAnim PlayerAnimController
+    {
+        get
+        {
+            if (m_playerAnimController == null)
+                m_playerAnimController = GetComponent<PlayerAnim>();
+            return m_playerAnimController;
+        }
+
+        set
+        {
+            m_playerAnimController = value;
         }
     }
 
@@ -103,7 +119,7 @@ class PlayerMoveComponent : MonoBehaviour
         //CharController.Move(m_motion * speed);
 
         // TODO: Use acceleration later
-        if (IsOnGround && CheckGroundInRange(0.6f))
+        if (IsOnGround && CheckGroundInRange(1.1f))
             Rig.velocity = m_motion * speed / Time.fixedDeltaTime;
 
         Rig.velocity += Physics.gravity * Time.fixedDeltaTime;
@@ -114,6 +130,8 @@ class PlayerMoveComponent : MonoBehaviour
             (MouseInput.Instance.MousePos - transform.position).SetY(0), 0.2f);
         // Without lerp
         //transform.forward = (MouseInput.Instance.MousePos - transform.position).SetY(0);
+
+        PlayerAnimController.GetAnimOffset(transform.forward, m_motion);
     }
 
     private void MoveInForward()
