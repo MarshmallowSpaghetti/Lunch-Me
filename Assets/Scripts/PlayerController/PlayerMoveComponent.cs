@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-class PlayerMoveComponent : MonoBehaviour
+public class PlayerMoveComponent : MonoBehaviour
 {
     public float speed = 1;
 
