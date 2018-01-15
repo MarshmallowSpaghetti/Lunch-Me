@@ -124,10 +124,10 @@ public class PlayerMoveComponent : MonoBehaviour
 
         //CharController.Move(m_motion * speed);
 
-        // TODO: Use acceleration later
-        if (IsOnGround && CheckGroundInRange(1.4f))
-            Rig.velocity = m_motion * speed / Time.fixedDeltaTime;
-
+        float yVel = Rig.velocity.y;
+        if (IsOnGround)// && CheckGroundInRange(1.4f))
+            Rig.velocity = (m_motion * speed / Time.fixedDeltaTime).SetY(yVel);
+        
         Rig.velocity += Physics.gravity * Time.fixedDeltaTime;
 
         // Always keep in horizontal plane
