@@ -75,7 +75,7 @@ public class PlayerMoveComponent : MonoBehaviour
             {
                 motionRing.gameObject.SetActive(false);
             }
-            else if(m_isOnGround == false && value == true)
+            else if (m_isOnGround == false && value == true)
             {
                 // Prevenet player slide after landing
                 //Rig.velocity = Vector3.zero;
@@ -84,7 +84,7 @@ public class PlayerMoveComponent : MonoBehaviour
                 motionRing.gameObject.SetActive(true);
                 motionRing.forward = transform.forward;
 
-                //print("Hit on ground");
+                print("Hit on ground");
                 if (onHitGround != null)
                     onHitGround();
             }
@@ -127,7 +127,7 @@ public class PlayerMoveComponent : MonoBehaviour
         float yVel = Rig.velocity.y;
         if (IsOnGround)// && CheckGroundInRange(1.4f))
             Rig.velocity = (m_motion * speed / Time.fixedDeltaTime).SetY(yVel);
-        
+
         Rig.velocity += Physics.gravity * Time.fixedDeltaTime;
 
         // Always keep in horizontal plane

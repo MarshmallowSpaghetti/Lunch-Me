@@ -16,8 +16,9 @@ public class Player : MonoBehaviour
     private ProjectileController m_projectileCtrl;
 
     public Transform launchTrans;
-    
+
     private Rigidbody m_rig;
+    private PlayerMoveComponent m_playerMoveComp;
 
     public PlayerAnim PlayerAnimController
     {
@@ -57,6 +58,28 @@ public class Player : MonoBehaviour
                 m_rig = GetComponent<Rigidbody>();
             return m_rig;
         }
+    }
+
+    public PlayerMoveComponent PlayerMoveComp
+    {
+        get
+        {
+            if (m_playerMoveComp == null)
+            {
+                m_playerMoveComp = GetComponent<PlayerMoveComponent>();
+            }
+            return m_playerMoveComp;
+        }
+    }
+
+    private void Awake()
+    {
+        PlayerMoveComp.onHitGround += () =>
+        {
+            print("Jump again");
+            PlayerMoveComp.IsOnGround = false;
+            Rig.velocity = Vector3.up * 15f;
+        };
     }
 
     // Update is called once per frame

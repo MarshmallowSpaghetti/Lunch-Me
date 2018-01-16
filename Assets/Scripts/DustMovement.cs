@@ -16,7 +16,7 @@ public class DustMovement : MonoBehaviour
     void Start()
     {
         initLocalPos = transform.localPosition;
-        playerMoveComp.onHitGround = () =>
+        playerMoveComp.onHitGround += () =>
         {
             if (impactDust != null)
             {
