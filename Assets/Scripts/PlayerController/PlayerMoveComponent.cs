@@ -73,6 +73,7 @@ public class PlayerMoveComponent : MonoBehaviour
         {
             if (m_isOnGround == true && value == false)
             {
+                m_isOnGround = value;
                 motionRing.gameObject.SetActive(false);
             }
             else if (m_isOnGround == false && value == true)
@@ -84,11 +85,11 @@ public class PlayerMoveComponent : MonoBehaviour
                 motionRing.gameObject.SetActive(true);
                 motionRing.forward = transform.forward;
 
+                m_isOnGround = value;
                 print("Hit on ground");
                 if (onHitGround != null)
                     onHitGround();
             }
-            m_isOnGround = value;
         }
     }
 
@@ -166,7 +167,14 @@ public class PlayerMoveComponent : MonoBehaviour
         // We give player control only when player land on ground
         if (collision.gameObject.layer == 8)
         {
+            bool IsOnGroundBefore = m_isOnGround;
             IsOnGround = true;
+            if (IsOnGroundBefore == false && collision.relativeVelocity.y > 3f)
+            {
+                //print("collision impact " + collision.relativeVelocity);
+                Rig.velocity = collision.relativeVelocity.SetX(0).SetZ(0) * 0.75f;
+                IsOnGround = false;
+            }
         }
         else
         {

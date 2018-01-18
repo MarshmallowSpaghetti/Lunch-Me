@@ -74,12 +74,12 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        PlayerMoveComp.onHitGround += () =>
-        {
-            print("Jump again");
-            PlayerMoveComp.IsOnGround = false;
-            Rig.velocity = Vector3.up * 15f;
-        };
+        //PlayerMoveComp.onHitGround += () =>
+        //{
+        //    print("Jump again");
+        //    PlayerMoveComp.IsOnGround = false;
+        //    //Rig.velocity = Vector3.up * 15f;
+        //};
     }
 
     // Update is called once per frame
