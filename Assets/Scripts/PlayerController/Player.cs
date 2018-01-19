@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody m_rig;
     private PlayerMoveComponent m_playerMoveComp;
+    private Vector3 m_nextLandingPoint = new Vector3(0, -999, 0);
 
     public PlayerAnim PlayerAnimController
     {
@@ -83,11 +84,18 @@ public class Player : MonoBehaviour
         //};
         PlayerMoveComp.onBounceFromGround += (velocity) =>
         {
+            if (m_nextLandingPoint.y > -990)
+            {
+                ProjectCtrl.SetTargetWithAngle(m_nextLandingPoint);
+                ProjectCtrl.Launch();
+                m_nextLandingPoint = new Vector3(0, -999, 0);
+                return;
+            }
             // Bounce threadhold
             if (velocity.y < 3f)
                 return;
 
-            Rig.velocity = velocity.SetX(0).SetZ(0) * 0.95f;
+            Rig.velocity = velocity.SetX(0).SetZ(0) * 0.85f;
             PlayerMoveComp.IsOnGround = false;
         };
     }
@@ -129,55 +137,61 @@ public class Player : MonoBehaviour
 
     private void CheckMouseStatus_ClickToSelect()
     {
-        if (Input.GetMouseButton(0) && m_isAiming == false)
-        {
-            ProjectCtrl.SetEnable(true);
-            m_isAiming = true;
-        }
-        else if (Input.GetMouseButton(0) == false && m_isAiming == true)
-        {
-            m_isAiming = false;
-            ProjectCtrl.SetEnable(false);
-            ProjectCtrl.DirectlyLaunch();
-        }
-    }
+        //if (Input.GetMouseButton(0) && m_isAiming == false)
+        //{
+        //    //ProjectCtrl.SetEnable(true);
+        //    m_isAiming = true;
+        //}
+        //else if (Input.GetMouseButton(0) == false && m_isAiming == true)
+        //{
+        //    m_isAiming = false;
+        //    //ProjectCtrl.SetEnable(false);
+        //    //ProjectCtrl.DirectlyLaunch();
+        //    m_nextLandingPoint = MouseInput.Instance.MousePos;
+        //}
 
-    private void OnControllerColliderHit(ControllerColliderHit collision)
-    {
-        if (collision.gameObject.name == "Sphere")
+        if (Input.GetMouseButtonUp(0))
         {
-            //print("Pick " + collision.gameObject.name);
-            if (holdingItem == null)
-            {
-                collision.transform.position = (launchTrans.position);
-                collision.transform.SetParent(transform);
-                collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                holdingItem = collision.transform;
-            }
+            m_nextLandingPoint = MouseInput.Instance.MousePos;
+            //Rig.velocity = Vector3.down * 10;
+            ProjectCtrl.SetTargetWithAngle(m_nextLandingPoint);
+            ProjectCtrl.Launch();
+            m_nextLandingPoint = new Vector3(0, -999, 0);
         }
     }
 
     private void CheckBounce(float _velocityThreshold, float _distanceThreshold)
     {
         // Close enough to ground
-        if(PlayerMoveComp.IsOnGround
-            || Physics.Raycast(transform.position, Vector3.down, _distanceThreshold, 1 << LayerMask.NameToLayer("Ground")))
+        //if(PlayerMoveComp.IsOnGround
+        //    || Physics.Raycast(transform.position, Vector3.down, _distanceThreshold, 1 << LayerMask.NameToLayer("Ground")))
+        //{
+        //    if (Mathf.Abs(Rig.velocity.y) > _velocityThreshold)
+        //    {
+        //        ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
+        //        CheckMouseStatus_ClickToSelect();
+        //    }
+        //    else
+        //    {
+        //        ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
+        //        CheckMouseStatus_HoldToLaunch();
+        //    }
+        //}
+        //else
+        //{
+        //    m_isAiming = false;
+        //    ProjectCtrl.SetEnable(false);
+        //}
+
+        if (PlayerMoveComp.IsOnGround)
         {
-            if (Mathf.Abs(Rig.velocity.y) > _velocityThreshold)
-            {
-                ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
-                CheckMouseStatus_ClickToSelect();
-            }
-            else
-            {
-                ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
-                CheckMouseStatus_HoldToLaunch();
-            }
+            ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
+            CheckMouseStatus_HoldToLaunch();
         }
         else
         {
-            m_isAiming = false;
-            ProjectCtrl.SetEnable(false);
+            ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
+            CheckMouseStatus_ClickToSelect();
         }
     }
 }

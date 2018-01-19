@@ -162,6 +162,11 @@ public class ProjectileController : MonoBehaviour
         Gizmos.DrawSphere(m_targetPoint, 0.2f);
     }
 
+    public void SetTargetWithAngle(Vector3 _target)
+    {
+        SetTargetWithAngle(_target, m_initialDegree);
+    }
+
     public void SetTargetWithAngle(Vector3 _target, float _degree)
     {
         m_currentRadian = _degree * Mathf.Deg2Rad;
@@ -193,7 +198,12 @@ public class ProjectileController : MonoBehaviour
         return ProjectileMath.CalculateLaunchSpeed(distance, yOffset, Physics.gravity.magnitude, _degree * Mathf.Deg2Rad);
     }
 
-    public void SetTargetWithSpeed(Vector3 _target, float _speed, bool _useLowAngle)
+    public void SetTargetWithSpeed(Vector3 _target)
+    {
+        SetTargetWithSpeed(_target, m_initialSpeed, m_useLowAngle);
+    }
+
+    private void SetTargetWithSpeed(Vector3 _target, float _speed, bool _useLowAngle)
     {
         m_currentSpeed = _speed;
 
