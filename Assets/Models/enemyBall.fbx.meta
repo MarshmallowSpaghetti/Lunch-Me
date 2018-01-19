@@ -1,46 +1,77 @@
 fileFormatVersion: 2
 guid: 3f220b4956ddef147b14d3755c436e47
-timeCreated: 1516291804
+timeCreated: 1516333875
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: joint1
-    100004: joint10
-    100006: joint11
-    100008: joint12
-    100010: joint13
-    100012: joint2
-    100014: joint3
-    100016: joint4
-    100018: joint5
-    100020: joint6
-    100022: joint7
-    100024: joint8
-    100026: joint9
-    100028: monster
-    400000: //RootNode
-    400002: joint1
-    400004: joint10
-    400006: joint11
-    400008: joint12
-    400010: joint13
-    400012: joint2
-    400014: joint3
-    400016: joint4
-    400018: joint5
-    400020: joint6
-    400022: joint7
-    400024: joint8
-    400026: joint9
-    400028: monster
+    100000: Armature
+    100002: //RootNode
+    100004: joint1
+    100006: joint10
+    100008: joint10_end
+    100010: joint11
+    100012: joint11_end
+    100014: joint12
+    100016: joint12_end
+    100018: joint13
+    100020: joint13_end
+    100022: joint2
+    100024: joint2_end
+    100026: joint3
+    100028: joint3_end
+    100030: joint4
+    100032: joint4_end
+    100034: joint5
+    100036: joint5_end
+    100038: joint6
+    100040: joint6_end
+    100042: joint7
+    100044: joint7_end
+    100046: joint8
+    100048: joint8_end
+    100050: joint9
+    100052: joint9_end
+    100054: monster
+    400000: Armature
+    400002: //RootNode
+    400004: joint1
+    400006: joint10
+    400008: joint10_end
+    400010: joint11
+    400012: joint11_end
+    400014: joint12
+    400016: joint12_end
+    400018: joint13
+    400020: joint13_end
+    400022: joint2
+    400024: joint2_end
+    400026: joint3
+    400028: joint3_end
+    400030: joint4
+    400032: joint4_end
+    400034: joint5
+    400036: joint5_end
+    400038: joint6
+    400040: joint6_end
+    400042: joint7
+    400044: joint7_end
+    400046: joint8
+    400048: joint8_end
+    400050: joint9
+    400052: joint9_end
+    400054: monster
     2100000: lambert1
     4300000: monster
-    7400000: Take 001
+    7400000: Idle
     9500000: //RootNode
     13700000: monster
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: d4b90b15ac5a7b444b88d1305e9b7c07, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -66,7 +97,35 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Armature|Armature|Take 001|BaseLayer
+      firstFrame: 0
+      lastFrame: 48
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
