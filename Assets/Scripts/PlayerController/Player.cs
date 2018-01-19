@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour
 {
@@ -80,15 +81,33 @@ public class Player : MonoBehaviour
         //    PlayerMoveComp.IsOnGround = false;
         //    //Rig.velocity = Vector3.up * 15f;
         //};
+        PlayerMoveComp.onBounceFromGround += (velocity) =>
+        {
+            // Bounce threadhold
+            if (velocity.y < 3f)
+                return;
+
+            Rig.velocity = velocity.SetX(0).SetZ(0) * 0.85f;
+            PlayerMoveComp.IsOnGround = false;
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
-        CheckMouseStatus();
+        if (CanBounceFromGround(3, 3f))
+        {
+            ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
+            CheckMouseStatus_ClickToSelec();
+        }
+        else
+        {
+            ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
+            CheckMouseStatus_HoldToLaunch();
+        }
     }
 
-    private void CheckMouseStatus()
+    private void CheckMouseStatus_HoldToLaunch()
     {
         if (Input.GetMouseButton(0) && m_isAiming == false)
         {
@@ -117,6 +136,21 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void CheckMouseStatus_ClickToSelec()
+    {
+        if (Input.GetMouseButton(0) && m_isAiming == false)
+        {
+            m_isAiming = true;
+            ProjectCtrl.SetEnable(true);
+        }
+        else if (Input.GetMouseButton(0) == false && m_isAiming == true)
+        {
+            m_isAiming = false;
+            ProjectCtrl.SetEnable(false);
+            ProjectCtrl.DirectlyLaunch();
+        }
+    }
+
     private void OnControllerColliderHit(ControllerColliderHit collision)
     {
         if (collision.gameObject.name == "Sphere")
@@ -129,6 +163,20 @@ public class Player : MonoBehaviour
                 collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 holdingItem = collision.transform;
             }
+        }
+    }
+
+    private bool CanBounceFromGround(float _velocityThreshold, float _distanceThreshold)
+    {
+        //if (Mathf.Abs(Rig.velocity.y) > _velocityThreshold
+        if (PlayerMoveComp.IsOnGround
+            || Physics.Raycast(transform.position, Vector3.down, _distanceThreshold, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

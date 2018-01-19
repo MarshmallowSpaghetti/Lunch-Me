@@ -16,6 +16,7 @@ public class PlayerMoveComponent : MonoBehaviour
     private PlayerAnim m_playerAnimController;
 
     public Action onHitGround;
+    public Action<Vector3> onBounceFromGround;
 
     public CharacterController CharController
     {
@@ -167,13 +168,11 @@ public class PlayerMoveComponent : MonoBehaviour
         // We give player control only when player land on ground
         if (collision.gameObject.layer == 8)
         {
-            bool IsOnGroundBefore = m_isOnGround;
+            bool isOnGroundBefore = m_isOnGround;
             IsOnGround = true;
-            if (IsOnGroundBefore == false && collision.relativeVelocity.y > 3f)
+            if (isOnGroundBefore == false)
             {
-                //print("collision impact " + collision.relativeVelocity);
-                Rig.velocity = collision.relativeVelocity.SetX(0).SetZ(0) * 0.75f;
-                IsOnGround = false;
+                onBounceFromGround(collision.relativeVelocity);
             }
         }
         else

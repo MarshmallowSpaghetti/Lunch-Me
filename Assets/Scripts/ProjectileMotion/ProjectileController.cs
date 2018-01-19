@@ -17,7 +17,7 @@ public class ProjectileController : MonoBehaviour
     float cooldown = 0.1f;
     private float lastShotTime;
 
-    enum LaunchType
+    public enum LaunchType
     {
         useInitialAngle,
         useInitialSpeed,
@@ -70,6 +70,19 @@ public class ProjectileController : MonoBehaviour
         }
     }
 
+    public LaunchType Type
+    {
+        get
+        {
+            return type;
+        }
+
+        set
+        {
+            type = value;
+        }
+    }
+
     private void Start()
     {
         Physics.gravity = new Vector3(0f, -30f, 0f);
@@ -112,6 +125,13 @@ public class ProjectileController : MonoBehaviour
         Launch();
 
         m_initialSpeed = minSpeed;
+        // To clear the old line before next time it apears
+        projectileArc.GetComponent<LineRenderer>().positionCount = 0;
+    }
+
+    public void DirectlyLaunch()
+    {
+        Launch();
         // To clear the old line before next time it apears
         projectileArc.GetComponent<LineRenderer>().positionCount = 0;
     }
