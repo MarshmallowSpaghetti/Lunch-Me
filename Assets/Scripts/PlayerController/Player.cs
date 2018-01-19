@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
             if (velocity.y < 3f)
                 return;
 
-            Rig.velocity = velocity.SetX(0).SetZ(0) * 0.85f;
+            Rig.velocity = velocity.SetX(0).SetZ(0) * 0.95f;
             PlayerMoveComp.IsOnGround = false;
         };
     }
@@ -95,16 +95,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CanBounceFromGround(3, 3f))
-        {
-            ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
-            CheckMouseStatus_ClickToSelec();
-        }
-        else
-        {
-            ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
-            CheckMouseStatus_HoldToLaunch();
-        }
+        CheckBounce(1, 3f);
     }
 
     private void CheckMouseStatus_HoldToLaunch()
@@ -136,12 +127,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void CheckMouseStatus_ClickToSelec()
+    private void CheckMouseStatus_ClickToSelect()
     {
         if (Input.GetMouseButton(0) && m_isAiming == false)
         {
-            m_isAiming = true;
             ProjectCtrl.SetEnable(true);
+            m_isAiming = true;
         }
         else if (Input.GetMouseButton(0) == false && m_isAiming == true)
         {
@@ -166,17 +157,27 @@ public class Player : MonoBehaviour
         }
     }
 
-    private bool CanBounceFromGround(float _velocityThreshold, float _distanceThreshold)
+    private void CheckBounce(float _velocityThreshold, float _distanceThreshold)
     {
-        //if (Mathf.Abs(Rig.velocity.y) > _velocityThreshold
-        if (PlayerMoveComp.IsOnGround
+        // Close enough to ground
+        if(PlayerMoveComp.IsOnGround
             || Physics.Raycast(transform.position, Vector3.down, _distanceThreshold, 1 << LayerMask.NameToLayer("Ground")))
         {
-            return true;
+            if (Mathf.Abs(Rig.velocity.y) > _velocityThreshold)
+            {
+                ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
+                CheckMouseStatus_ClickToSelect();
+            }
+            else
+            {
+                ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
+                CheckMouseStatus_HoldToLaunch();
+            }
         }
         else
         {
-            return false;
+            m_isAiming = false;
+            ProjectCtrl.SetEnable(false);
         }
     }
 }
