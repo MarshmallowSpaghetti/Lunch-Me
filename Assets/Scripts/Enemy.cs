@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour
                         else
                         {
                             //print("Moving target pos from " + targetPos + " to " + targetForTarget);
-                            targetPos = 
+                            targetPos =
                                 Vector3.Lerp(targetPos, targetForTarget,
                                 0.5f * Time.deltaTime);
                             if ((targetPos - targetForTarget).magnitude < 0.1f)
@@ -252,5 +252,20 @@ public class Enemy : MonoBehaviour
         leftDown = new Vector3(hitInfoLeft.transform.position.x + boundaryThickness, hitInfoBackward.transform.position.z + boundaryThickness);
         rightUp = new Vector3(hitInfoRight.transform.position.x - boundaryThickness, hitInfoFoward.transform.position.z - boundaryThickness);
         return;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.CompareTag("Player") 
+            && hit.gameObject.GetComponent<PlayerMoveComponent>().IsOnGround == false)
+        {
+            print("Enemy hit by " + hit.gameObject);
+            Destroy(gameObject);
+
+            GameObject enemyBall = GameObject.Instantiate(Resources.Load<GameObject>("EnemyBall"),
+                new Vector3(Random.Range(-15, 15), 1, Random.Range(-15, 15)),
+                Quaternion.identity,
+                this.transform.parent);
+        }
     }
 }
