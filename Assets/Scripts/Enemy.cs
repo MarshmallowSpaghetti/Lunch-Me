@@ -14,8 +14,8 @@ public class Enemy : MonoBehaviour
 
     public float speed = 1;
     public float boundaryThickness = 0.3f;
-
-    private CharacterController m_charController;
+    
+    private Rigidbody m_rig;
 
     public TextMesh countDownTxt;
 
@@ -50,18 +50,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public CharacterController CharController
+    public Rigidbody Rig
     {
         get
         {
-            if (m_charController == null)
-                m_charController = GetComponent<CharacterController>();
-            return m_charController;
+            if (m_rig == null)
+                m_rig = GetComponent<Rigidbody>();
+            return m_rig;
         }
 
         set
         {
-            m_charController = value;
+            m_rig = value;
         }
     }
 
@@ -117,7 +117,12 @@ public class Enemy : MonoBehaviour
 
                     //transform.Translate((targetPos.SetY(0) - transform.position.SetY(0)).normalized * Time.deltaTime * speed, Space.World);
                     //transform.position += (targetPos.SetY(0) - transform.position.SetY(0)).normalized * Time.deltaTime * speed;
-                    CharController.Move((targetPos.SetY(0) - transform.position.SetY(0)).normalized * Time.deltaTime * speed);
+                    //CharController.Move((targetPos.SetY(0) - transform.position.SetY(0)).normalized * Time.deltaTime * speed);
+
+                    float yVel = Rig.velocity.y;
+                    Rig.velocity = ((targetPos - transform.position).SetY(0).normalized * speed).SetY(yVel);
+                    //print("Rig vel " + Rig.velocity);
+                    Rig.velocity += Physics.gravity * Time.fixedDeltaTime;
 
                     transform.forward = (targetPos.SetY(0) - transform.position.SetY(0));
                     if (CheckIfObstacleAhead(targetDistance))
@@ -254,18 +259,26 @@ public class Enemy : MonoBehaviour
         return;
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (hit.gameObject.CompareTag("Player") 
-            && hit.gameObject.GetComponent<PlayerMoveComponent>().IsOnGround == false)
+        if (collision.gameObject.CompareTag("Player")
+            && collision.gameObject.GetComponent<PlayerMoveComponent>().IsOnGround == false)
         {
-            print("Enemy hit by " + hit.gameObject);
+            print("Enemy hit by " + collision.gameObject);
             Destroy(gameObject);
 
             GameObject enemyBall = GameObject.Instantiate(Resources.Load<GameObject>("EnemyBall"),
                 new Vector3(Random.Range(-15, 15), 1, Random.Range(-15, 15)),
                 Quaternion.identity,
                 this.transform.parent);
+        }
+        else if (collision.gameObject.layer == 8)
+        {
+            if (((transform.position.y - 1) - collision.transform.position.y).Sgn() < 0)
+            {
+                print("hit ground " + collision.gameObject);
+                Rig.velocity = -Rig.velocity * 0.5f + Vector3.up;
+            }
         }
     }
 }
