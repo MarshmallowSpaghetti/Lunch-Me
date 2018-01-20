@@ -6,6 +6,7 @@ public class MouseInput : BaseSingletonMono<MouseInput>
 {
     private Vector3 m_mousePos;
     public Transform cursorTrans;
+    private Vector3 m_mouseLastPos;
 
     public Vector3 MousePos
     {
@@ -29,7 +30,8 @@ public class MouseInput : BaseSingletonMono<MouseInput>
     // Update is called once per frame
     void Update()
     {
-        UpdateMouseHitPos();
+        if (IsMouseMoving())
+            UpdateMouseHitPos();
     }
 
     private void UpdateMouseHitPos()
@@ -46,5 +48,19 @@ public class MouseInput : BaseSingletonMono<MouseInput>
             cursorTrans.position = MousePos;
         else
             transform.position = MousePos;
+    }
+
+    private bool IsMouseMoving()
+    {
+        if ((CrossPlatformInputManager.mousePosition - m_mouseLastPos).sqrMagnitude > 0.001f)
+        {
+            m_mouseLastPos = CrossPlatformInputManager.mousePosition;
+            return true;
+        }
+        else
+        {
+            m_mouseLastPos = CrossPlatformInputManager.mousePosition;
+            return false;
+        }
     }
 }

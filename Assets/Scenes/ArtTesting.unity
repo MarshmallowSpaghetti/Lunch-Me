@@ -34916,7 +34916,7 @@ Prefab:
     - target: {fileID: 114967220158310530, guid: 7e9716b6d364c5d4a83d9d06435a33bf,
         type: 2}
       propertyPath: m_initialDegree
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 114967220158310530, guid: 7e9716b6d364c5d4a83d9d06435a33bf,
         type: 2}
