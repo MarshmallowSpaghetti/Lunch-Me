@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
             if (velocity.y < 3f)
                 return;
 
-            Rig.velocity = velocity.SetX(0).SetZ(0) * 0f;
+            Rig.velocity = velocity.SetX(0).SetZ(0) * 0.9f;
             PlayerMoveComp.IsOnGround = false;
         };
     }
@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
         //    //ProjectCtrl.DirectlyLaunch();
         //    m_nextLandingPoint = MouseInput.Instance.MousePos;
         //}
-        ProjectCtrl.SetEnable(true);
+
         if (Input.GetMouseButtonUp(0))
         {
             m_nextLandingPoint = MouseInput.Instance.MousePos;
@@ -185,10 +185,8 @@ public class Player : MonoBehaviour
 
         if (PlayerMoveComp.IsOnGround)
         {
-            //ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
-            //CheckMouseStatus_HoldToLaunch();
-            ProjectCtrl.Type = ProjectileController.LaunchType.useInitialAngle;
-            CheckMouseStatus_ClickToSelect();
+            ProjectCtrl.Type = ProjectileController.LaunchType.useBothAngleAndSpeed;
+            CheckMouseStatus_HoldToLaunch();
         }
         else
         {

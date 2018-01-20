@@ -218,7 +218,7 @@ public class ProjectileController : MonoBehaviour
 
         if (targetInRange)
             m_currentRadian = _useLowAngle ? angle1 : angle0;
-        
+
         projectileArc.UpdateArc(_speed, distance, Physics.gravity.magnitude, m_currentRadian, direction, targetInRange);
         SetLaunchPoint(direction, m_currentRadian * Mathf.Rad2Deg);
     }
@@ -240,8 +240,7 @@ public class ProjectileController : MonoBehaviour
 
     private void SetLaunchPoint(Vector3 planarDirection, float turretAngle)
     {
-        launchPoint.rotation = Quaternion.AngleAxis(-turretAngle, transform.right)
-            * Quaternion.LookRotation(planarDirection);
+        launchPoint.rotation = Quaternion.LookRotation(planarDirection) * Quaternion.AngleAxis(-turretAngle, Vector3.right);
     }
 
     public void Launch()
