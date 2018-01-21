@@ -265,7 +265,8 @@ public class Enemy : MonoBehaviour
             && collision.gameObject.GetComponent<PlayerMoveComponent>().IsOnGround == false)
         {
             print("Enemy hit by " + collision.gameObject);
-            Destroy(gameObject);
+            StartCoroutine(MonsterDeath());
+            
 
             GameObject enemyBall = GameObject.Instantiate(Resources.Load<GameObject>("EnemyBall"),
                 new Vector3(Random.Range(-15, 15), 1, Random.Range(-15, 15)),
@@ -280,5 +281,15 @@ public class Enemy : MonoBehaviour
                 Rig.velocity = -Rig.velocity * 0.5f + Vector3.up;
             }
         }
+    }
+
+    IEnumerator MonsterDeath()
+    {
+        while (transform.localScale.y > 0.2f)
+        {
+            transform.localScale -= new Vector3(0.0f, 3 * Time.deltaTime, 0.0f);
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 }
