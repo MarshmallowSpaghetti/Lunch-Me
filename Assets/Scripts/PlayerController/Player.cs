@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TasiYokan.Audio;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -97,6 +98,8 @@ public class Player : MonoBehaviour
 
             Rig.velocity = velocity.SetX(0).SetZ(0) * 0.9f;
             PlayerMoveComp.IsOnGround = false;
+
+            new SingleAudio("Jump_1st_Phase").Play();
         };
     }
 
