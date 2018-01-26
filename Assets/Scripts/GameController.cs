@@ -9,13 +9,7 @@ public class GameController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        print(AudioManager.Instance);
-        new SingleAudio("BGM_LOOP").OnStart(() =>
-        {
-            print("hi");
-        }).Play();
-
-        int a = 0;
+        new SingleAudio("BGM_LOOP", "Bgm").Play();
     }
 
     // Update is called once per frame

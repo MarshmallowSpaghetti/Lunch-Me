@@ -1,5 +1,12 @@
 ﻿{
     "List": [
-        "BGM_LOOP"
+        "AMB_LOOP",
+        "BGM_LOOP",
+        "Jump_1st_Phase",
+        "Jump_2nd_Phase",
+        "Jump_Charging",
+        "Jump_Landing",
+        "Jump_Start1",
+        "Jump_Start2"
     ]
 }
