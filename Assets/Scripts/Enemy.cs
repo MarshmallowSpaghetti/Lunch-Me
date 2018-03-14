@@ -141,12 +141,19 @@ public class Enemy : MonoBehaviour
                         }
                         else
                         {
-                            //print("Moving target pos from " + targetPos + " to " + targetForTarget);
-                            targetPos =
-                                Vector3.Lerp(targetPos, targetForTarget,
-                                0.5f * Time.deltaTime);
-                            if ((targetPos - targetForTarget).magnitude < 0.1f)
-                                targetForTarget = targetForTarget.SetY(-999);
+                            if (transform.position.y < 0.5f)
+                            {
+                                yield return StartCoroutine(Jump());
+                            }
+                            else
+                            {
+                                //print("Moving target pos from " + targetPos + " to " + targetForTarget);
+                                targetPos =
+                                    Vector3.Lerp(targetPos, targetForTarget,
+                                    0.5f * Time.deltaTime);
+                                if ((targetPos - targetForTarget).magnitude < 0.1f)
+                                    targetForTarget = targetForTarget.SetY(-999);
+                            }
                         }
                     }
                 }
@@ -166,6 +173,18 @@ public class Enemy : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(targetPos, 0.2f);
+    }
+
+    IEnumerator Jump()
+    {
+        Rig.isKinematic = true;
+        yield return new WaitForSeconds(0.15f);
+        Rig.isKinematic = false;
+        //print("start jump");
+        Rig.velocity = (transform.forward.normalized + transform.up.normalized) * 2;
+        //Rig.AddForce((transform.forward.normalized + transform.up.normalized) * 20);
+        yield return new WaitForSeconds(0.5f);
+        //print("end jump");
     }
 
     IEnumerator FindNewTargetAndTurnTo()
@@ -277,7 +296,7 @@ public class Enemy : MonoBehaviour
         {
             if (((transform.position.y - 1) - collision.transform.position.y).Sgn() < 0)
             {
-                print("hit ground " + collision.gameObject);
+                //print("hit ground " + collision.gameObject);
                 Rig.velocity = -Rig.velocity * 0.5f + Vector3.up;
             }
         }
